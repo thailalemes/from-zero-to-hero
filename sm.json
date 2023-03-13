@@ -1,0 +1,8 @@
+{
+  "apiEndpoint": "https://from-zero-to-hero2.cdn.prismic.io/api/v2",
+  "libraries": [
+    "@/slices"
+  ],
+  "_latest": "0.3.0",
+  "framework": "previousNext"
+}
