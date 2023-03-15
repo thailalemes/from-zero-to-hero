@@ -6,7 +6,6 @@ import {
 } from 'next';
 import { ParsedUrlQuery, parse } from 'querystring';
 
-import { useRouter } from 'next/router';
 import { getPrismicClient } from '../../services/prismic';
 import Post, { getStaticProps, getStaticPaths } from '../../pages/post/[slug]';
 
@@ -185,15 +184,16 @@ const mockedGetByUIDReturn = {
   },
 };
 
-jest.mock('@prismicio/client');
 jest.mock('../../services/prismic');
-jest.mock('next/router');
-const mockedUseRouter = useRouter as jest.Mock;
+const useRouter = jest.spyOn(require('next/router'), 'useRouter');
+useRouter.mockImplementation(() => ({
+  pathname: '/',
+}));
 const mockedPrismic = getPrismicClient as jest.Mock;
 
 describe('Post', () => {
   beforeAll(() => {
-    mockedUseRouter.mockReturnValue({
+    useRouter.mockReturnValue({
       isFallback: false,
     });
 
@@ -262,7 +262,7 @@ describe('Post', () => {
   });
 
   it('should be able to render loading message if fallback', () => {
-    mockedUseRouter.mockReturnValueOnce({
+    useRouter.mockReturnValueOnce({
       isFallback: true,
     });
 

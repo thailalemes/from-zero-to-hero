@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
-import Prismic from '@prismicio/client';
+import * as prismic from '@prismicio/client';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -106,9 +106,9 @@ export default function Post({ post }: PostProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const prismic = getPrismicClient();
-  const posts = await prismic.query([
-    Prismic.predicate.at('document.type', 'posts'),
+  const client = getPrismicClient();
+  const posts = await client.query([
+    prismic.predicate.at('document.type', 'posts'),
   ]);
 
   const paths = posts.results.map(post => {
@@ -126,9 +126,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async context => {
-  const prismic = getPrismicClient();
+  const client = getPrismicClient();
   const { slug } = context.params;
-  const response = await prismic.getByUID('posts', String(slug), {});
+  const response = await client.getByUID('posts', String(slug), {});
 
   const post = {
     uid: response.uid,

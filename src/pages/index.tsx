@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
-import Prismic from '@prismicio/client';
+import * as prismic from '@prismicio/client';
 
 import ptBR from 'date-fns/locale/pt-BR';
 import { format } from 'date-fns';
@@ -98,9 +98,9 @@ export const Home: React.FC<HomeProps> = ({ postsPagination }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const prismic = getPrismicClient();
-  const postsResponse = await prismic.query(
-    [Prismic.predicates.at('document.type', 'post')],
+  const client = getPrismicClient();
+  const postsResponse = await client.query(
+    [prismic.predicate.at('document.type', 'post')],
     {
       fetch: ['post.title', 'post.author', 'post.subtitle'],
     }
@@ -119,7 +119,7 @@ export const getStaticProps: GetStaticProps = async () => {
         next_page: postsResponse.next_page,
       },
     },
-    revalidate: 60 * 30, // 30 minutos
+    revalidate: 60 * 30,
   };
 };
 
