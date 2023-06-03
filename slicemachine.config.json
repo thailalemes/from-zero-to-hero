@@ -1,0 +1,5 @@
+{
+  "repositoryName": "from-zero-to-hero",
+  "adapter": "@slicemachine/adapter-next",
+  "libraries": ["./slices"]
+}
